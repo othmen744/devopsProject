@@ -1,0 +1,30 @@
+version: "3"
+services:
+  mysqldb:
+    container_name: mysqldb
+    image: mysql:latest
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_USER:root
+      - MYSQL_PASSWORD:root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=othmenDB
+    volumes:
+      - db_vol:/var/lib/mysqldb
+
+
+  _app:
+    build: ./
+    image: othmen
+    restart: unless-stopped
+    ports:
+      - 8089:8089
+    depends_on:
+      - mysqldb
+
+
+
+volumes:
+  db_vol:
